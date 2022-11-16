@@ -4,9 +4,8 @@ on: [push]
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  # GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
-  # GKE_CLUSTER: cluster-1    # TODO: update to cluster name
-  # GKE_ZONE: us-central1-c   # TODO: update to cluster zone
+  GKE_CLUSTER: simple-web-app-cluster
+  GKE_ZONE: us-central1-c
   # DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
   REPOSITORY: images
   IMAGE: simple-web-app
@@ -30,13 +29,6 @@ jobs:
       # cat '${{ steps.auth.outputs.credentials_file_path }}' | docker login -u _json_key --password-stdin https://gcr.io
       # echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://gcr.io
       
-      # # Get the GKE credentials so we can deploy to the cluster
-      # - name: Set up GKE credentials
-      #   uses: google-github-actions/get-gke-credentials@v0
-      #   with:
-      #     cluster_name: ${{ env.GKE_CLUSTER }}
-      #     location: ${{ env.GKE_ZONE }}
-
       # Build the Docker image
       - name: Build
         run: |-
@@ -48,3 +40,13 @@ jobs:
       - name: Publish
         run: |-
           docker push "gcr.io/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - name: Set up GKE credentials
+        uses: google-github-actions/get-gke-credentials@v0
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+
+      - run: |-
+          kubectl get ns
