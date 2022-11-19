@@ -56,4 +56,4 @@ jobs:
           terraform -chdir=${{ env.TF_FOLDER }} init
 
       - run: |-
-          terraform -chdir=${{ env.TF_FOLDER }} plan
+          terraform -chdir=${{ env.TF_FOLDER }} plan -var project_id=${{ env.PROJECT_ID }}
