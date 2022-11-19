@@ -24,7 +24,7 @@ resource "kubernetes_deployment" "simple_web" {
 
       spec {
         container {
-          image = "var.simple_web_app_image"
+          image = var.simple_web_app_image
           name  = "simple-web"
 
           resources {
