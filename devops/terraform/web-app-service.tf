@@ -7,7 +7,7 @@ resource "kubernetes_deployment" "simple_web" {
   }
 
   spec {
-    replicas = 3
+    replicas = 2
 
     selector {
       match_labels = {
@@ -29,11 +29,11 @@ resource "kubernetes_deployment" "simple_web" {
 
           resources {
             limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
+              cpu    = "250m"
+              memory = "256Mi"
             }
             requests = {
-              cpu    = "250m"
+              cpu    = "100m"
               memory = "50Mi"
             }
           }
