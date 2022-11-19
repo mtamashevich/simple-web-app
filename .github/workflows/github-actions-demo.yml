@@ -50,7 +50,8 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-      - run: |
+      - name: Generate backend config for Terraform
+        run: |
           cat <<EOF >> ${{ env.TF_FOLDER }}/backend.tf
             terraform {
               backend "gcs" {
@@ -60,19 +61,14 @@ jobs:
             }
           EOF
 
-      - run: |
-          cat ${{ env.TF_FOLDER }}/backend.tf
-
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} init
-
-      - run: |-
-          terraform -chdir=${{ env.TF_FOLDER }} plan \
-            -var project_id=${{ env.PROJECT_ID }} \
-            -var simple_web_app_image=gcr.io/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
 
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} apply \
             -auto-approve \
             -var project_id=${{ env.PROJECT_ID }} \
             -var simple_web_app_image=gcr.io/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+
+      - run: |-
+          curl simple-web -s --output /dev/null --write-out "%{http_code}"
