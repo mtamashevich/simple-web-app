@@ -55,8 +55,8 @@ jobs:
           cd devops/terraform
       
       - run: |-
-          terraform init
+          pwd && terraform init
 
       - run: |-
-          terraform plan
+          cd devops/terraform && terraform plan
 
