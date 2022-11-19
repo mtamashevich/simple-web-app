@@ -25,7 +25,7 @@ resource "kubernetes_deployment" "simple_web" {
       spec {
         container {
           image = "var.simple_web_app_image"
-          name  = "simple_web"
+          name  = "simple-web"
 
           resources {
             limits = {
