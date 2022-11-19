@@ -52,4 +52,11 @@ jobs:
           kubectl get ns
       
       - run: |-
-          terraform version
+          cd devops/terraform
+      
+      - run: |-
+          terraform init
+
+      - run: |-
+          terraform plan
+
