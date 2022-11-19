@@ -10,6 +10,7 @@ env:
   REPOSITORY: images
   IMAGE: simple-web-app
   TF_FOLDER: devops/terraform
+  TF_BACKEND_BUCKET: simple-web-app-tf-backend
 
 jobs:
   Explore-GitHub-Actions:
@@ -49,9 +50,19 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-      - run: |-
-          kubectl get ns
-      
+      - run: |
+          cat <<EOF >> ${{ env.TF_FOLDER }}/backend.tf
+            terraform {
+              backend "gcs" {
+                prefix = "terraform/state"
+                bucket = "${{ env.TF_BACKEND_BUCKET }}"
+              }
+            }
+          EOF
+
+      - run: |
+          cat ${{ env.TF_FOLDER }}/backend.tf
+
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} init
 
