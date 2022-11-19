@@ -11,3 +11,7 @@ variable "project_zone" {
   description = "Your project zone"
   default     =  "us-central1-c"
 }
+
+variable "simple_web_app_image" {
+  description = "Docker image for simple-web service"
+}
