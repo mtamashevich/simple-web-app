@@ -57,3 +57,19 @@ resource "kubernetes_deployment" "simple_web" {
     }
   }
 }
+
+resource "kubernetes_service_v1" "simple_web" {
+  metadata {
+    name        = "simple-web"
+  }
+  spec {
+    selector = {
+      app = kubernetes_deployment.simple_web.metadata.0.labels.app
+    }
+    port {
+      port        = 80
+      target_port = 8080
+    }
+    type = "ClusterIP"
+  }
+}
