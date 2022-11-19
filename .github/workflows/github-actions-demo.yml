@@ -9,6 +9,7 @@ env:
   # DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
   REPOSITORY: images
   IMAGE: simple-web-app
+  TF_FOLDER: devops/terraform
 
 jobs:
   Explore-GitHub-Actions:
@@ -52,11 +53,7 @@ jobs:
           kubectl get ns
       
       - run: |-
-          cd devops/terraform
-      
-      - run: |-
-          pwd && terraform init
+          terraform -chdir=${{ env.TF_FOLDER }} init
 
       - run: |-
-          cd devops/terraform && terraform plan
-
+          terraform -chdir=${{ env.TF_FOLDER }} plan
