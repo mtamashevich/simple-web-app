@@ -70,3 +70,8 @@ jobs:
           terraform -chdir=${{ env.TF_FOLDER }} plan \
             -var project_id=${{ env.PROJECT_ID }} \
             -var simple_web_app_image=gcr.io/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+
+      - run: |-
+          terraform -chdir=${{ env.TF_FOLDER }} apply \
+            -var project_id=${{ env.PROJECT_ID }} \
+            -var simple_web_app_image=gcr.io/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
