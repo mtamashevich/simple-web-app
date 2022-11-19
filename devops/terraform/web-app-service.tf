@@ -38,20 +38,20 @@ resource "kubernetes_deployment" "simple_web" {
             }
           }
 
-        #   liveness_probe {
-        #     http_get {
-        #       path = "/"
-        #       port = 80
+          #   liveness_probe {
+          #     http_get {
+          #       path = "/"
+          #       port = 80
 
-        #       http_header {
-        #         name  = "X-Custom-Header"
-        #         value = "Awesome"
-        #       }
-        #     }
+          #       http_header {
+          #         name  = "X-Custom-Header"
+          #         value = "Awesome"
+          #       }
+          #     }
 
-        #     initial_delay_seconds = 3
-        #     period_seconds        = 3
-        #   }
+          #     initial_delay_seconds = 3
+          #     period_seconds        = 3
+          #   }
         }
       }
     }
@@ -60,7 +60,14 @@ resource "kubernetes_deployment" "simple_web" {
 
 resource "kubernetes_service_v1" "simple_web" {
   metadata {
-    name        = "simple-web"
+    annotations = {
+      "cloud.google.com/neg" = jsonencode(
+        {
+          ingress = true
+        }
+      )
+    }
+    name = "simple-web"
   }
   spec {
     selector = {
