@@ -77,6 +77,6 @@ resource "kubernetes_service_v1" "simple_web" {
       port        = 80
       target_port = 8080
     }
-    type = "ClusterIP"
+    type = "LoadBalancer"
   }
 }
