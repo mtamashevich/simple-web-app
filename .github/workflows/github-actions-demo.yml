@@ -72,7 +72,10 @@ jobs:
 
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} output > output.txt
- 
+
+      - run: |-
+          cat output.txt
+
       # - run: |-
       #     curl simple-web -s --output /dev/null --write-out "%{http_code}"
 
