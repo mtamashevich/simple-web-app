@@ -88,5 +88,5 @@ data "kubernetes_service_v1" "simple_web" {
 }
 
 output "external_ip" {
-    value = data.kubernetes_service_v1.simple_web.status
+    value = data.kubernetes_service_v1.simple_web.status.0.load_balancer.0.ingress.0.ip
 }
