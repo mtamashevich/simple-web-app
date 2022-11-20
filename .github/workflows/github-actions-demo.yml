@@ -74,7 +74,7 @@ jobs:
           terraform -chdir=${{ env.TF_FOLDER }} output > terraform_output.txt
 
       - name: Integration Test (Check external endpoint)
-      - run: |-
+        run: |-
           curl $(cat terraform_output.txt | awk '{ print $3 }' | sed 's/"//g')
 
       # - run: |-
