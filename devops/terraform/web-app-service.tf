@@ -80,3 +80,13 @@ resource "kubernetes_service_v1" "simple_web" {
     type = "LoadBalancer"
   }
 }
+
+data "kubernetes_service_v1" "simple_web" {
+  metadata {
+    name = "simple-web"
+  }
+}
+
+output "external_ip" {
+    value = data.kubernetes_service_v1.simple_web.status
+}
