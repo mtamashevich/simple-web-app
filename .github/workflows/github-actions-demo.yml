@@ -75,7 +75,7 @@ jobs:
 
       - name: Integration Test (Check external endpoint)
         run: |-
-          curl $(cat terraform_output.txt | awk '{ print $3 }' | sed 's/"//g')
+          curl $(cat terraform_output.txt | awk '{ print $3 }' | sed 's/"//g') -s
 
       # - run: |-
       #     curl simple-web -s --output /dev/null --write-out "%{http_code}"
