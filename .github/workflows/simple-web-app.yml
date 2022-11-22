@@ -127,9 +127,9 @@ jobs:
             }
           EOF
 
-      # - name: Terraform init
-      #   run: |-
-      #     terraform -chdir=${{ env.TF_FOLDER }} init
+      - name: Terraform init
+        run: |-
+          terraform -chdir=${{ env.TF_FOLDER }} init
 
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} output > terraform_output.txt
