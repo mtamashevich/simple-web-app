@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: CI-CD pipeline for repo ${{ github.repository }}
+run-name: ${{ github.actor }} is running pipeline
 on: [push]
 
 env:
@@ -13,7 +13,16 @@ env:
   TF_BACKEND_BUCKET: simple-web-app-tf-backend
 
 jobs:
+  Cheks-and-linters:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: |-
+          terraform -chdir=${{ env.TF_FOLDER }} fmt
+
   Explore-GitHub-Actions:
+    needs: Cheks-and-linters
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository code
