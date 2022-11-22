@@ -1,5 +1,5 @@
 name: Gitlab pipeline for simple-web-app
-run-name: ${{ github.actor }} is running pipeline for branch ${{ github.ref.name }}
+run-name: ${{ github.actor }} is running pipeline for branch $GITHUB_REF_NAME
 on: [push]
 
 env:
@@ -74,7 +74,6 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-
       - name: Generate backend config for Terraform
         run: |
           cat <<EOF >> ${{ env.TF_FOLDER }}/backend.tf
@@ -96,6 +95,26 @@ jobs:
             -auto-approve \
             -var project_id=${{ env.PROJECT_ID }} \
             -var simple_web_app_image=gcr.io/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+
+  Integration-tests:
+    needs: Deploy
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - name: Set up GKE credentials
+        uses: google-github-actions/get-gke-credentials@v0
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
 
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} output > terraform_output.txt
