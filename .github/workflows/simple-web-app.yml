@@ -1,5 +1,5 @@
 name: Gitlab pipeline for simple-web-app
-run-name: ${{ github.actor }} is running pipeline for branch ${{ env.GITHUB_REF_NAME }}
+run-name: ${{ github.actor }} is running pipeline for branch ${{ github.ref_name }}
 on: [push]
 
 env:
