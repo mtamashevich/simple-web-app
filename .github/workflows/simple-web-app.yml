@@ -116,6 +116,21 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
+      - name: Generate backend config for Terraform
+        run: |
+          cat <<EOF >> ${{ env.TF_FOLDER }}/backend.tf
+            terraform {
+              backend "gcs" {
+                prefix = "terraform/state"
+                bucket = "${{ env.TF_BACKEND_BUCKET }}"
+              }
+            }
+          EOF
+
+      - name: Terraform init
+        run: |-
+          terraform -chdir=${{ env.TF_FOLDER }} init
+
       - run: |-
           terraform -chdir=${{ env.TF_FOLDER }} output > terraform_output.txt
 
