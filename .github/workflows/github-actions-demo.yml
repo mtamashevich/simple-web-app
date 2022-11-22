@@ -1,4 +1,4 @@
-name: CI-CD pipeline for repo ${{ github.repository }}
+name: Gitlab pipeline for repo ${{ github.repository }}
 run-name: ${{ github.actor }} is running pipeline
 on: [push]
 
