@@ -1,6 +1,11 @@
 name: Gitlab pipeline for simple-web-app
 run-name: ${{ github.actor }} is running pipeline for branch ${{ github.ref_name }}
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - test/ci-cd
+  pull_request: {}
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
