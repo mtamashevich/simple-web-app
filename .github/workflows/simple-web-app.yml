@@ -23,11 +23,13 @@ jobs:
       - name: Chek terraform fmt
         run: |-
           terraform -chdir=${{ env.TF_FOLDER }} fmt -check -recursive
-      # Add your checks and linters here
+
+      # Shell scripts check
       - name: Shell scripts check
         run: |-
-          shellcheck -V
-      
+          find ./ -type f -name "*.sh" | while read line; do shellcheck -x $line; done
+
+      # Add your checks and linters here
       # End of checks and linters
 
   Build:
