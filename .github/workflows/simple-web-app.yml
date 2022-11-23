@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - test/ci-cd
   pull_request: {}
 
 env:
