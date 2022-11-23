@@ -9,6 +9,7 @@ const HOST = '0.0.0.0';
 // App
 const app = express();
 app.get('/', (req, res) => {
+  console.log('A new request received at ' + Date.now());
   res.send('Hello World!');
 });
 
