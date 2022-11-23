@@ -2,7 +2,7 @@
 
 set -ex
 
-simple_app_url="http://$(cat terraform_output.txt | awk '{ print $3 }' | sed 's/"//g')"
+simple_app_url="http://$(awk '{ print $3 }' < terraform_output.txt | sed 's/"//g')"
 simple_app_response_code=$(curl "$simple_app_url" -s --output curl_output.txt --write-out "%{http_code}")
 simple_app_response="$(cat curl_output.txt)"
 
