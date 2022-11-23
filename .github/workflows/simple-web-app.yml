@@ -19,10 +19,15 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      # Terraform check
       - name: Chek terraform fmt
         run: |-
           terraform -chdir=${{ env.TF_FOLDER }} fmt -check -recursive
       # Add your checks and linters here
+      - name: Shell scripts check
+        run: |-
+          shellcheck -V
+      
       # End of checks and linters
 
   Build:
@@ -135,15 +140,5 @@ jobs:
           terraform -chdir=${{ env.TF_FOLDER }} output > terraform_output.txt
 
       - run: |-
-          cat terraform_output.txt
-
-      # - name: Integration Test (Check external endpoint)
-      #   run: |-
-      #     curl $(cat terraform_output.txt | awk '{ print $3 }' | sed 's/"//g') -s
-
-      - run: |-
           devops/int-test/int-test.sh
-
-      # - run: |-
-      #     curl simple-web -s --output /dev/null --write-out "%{http_code}"
 
